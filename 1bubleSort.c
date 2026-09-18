@@ -1,56 +1,72 @@
-// Buble sort
+// Bubble Sort
 
 #include <stdio.h>
 #include <stdbool.h>
 
-int main(void){
+// Definir tamanho dos vetores (p/ jogar na função)
+#define tamanho(vetor) (sizeof(vetor) / sizeof((vetor)[0]))
 
-    int tam = 12; // quantidade de numeros no vetor
-    int num[tam];
-    int trocas = 0,passagens = 0,aux = 0;
-    bool trocou = false;
+void bubbleSort(int vetor[], int tam, char* nome)
+{
+    int numComparacoes = 0;
+    int numTrocas = 0;
+    int aux;
+    bool trocou;
 
-    printf("Recebendo os numeros:\n");
-    for(int i = 0; i < tam; i++){
-        printf("Digite o %d número: ", i+1);
-        scanf("%d", &num[i]);
+    printf("%s (Tamanho: %d elementos):\n\n", nome, tam); 
+    printf("Vetor desordenado:\n");
+    for(int i = 0; i < tam; i++)
+    {
+        printf("%d ", vetor[i]);
     }
     printf("\n\n");
 
-    printf("Vetor não ordenado:\n");
-    for(int i = 0; i < tam; i++) {
-        printf("%d ", num[i]);
-    }
-    printf("\n\n");
-
-    for(int i = 0; i < tam-1; i++)
+    // Lógica principal do Bubble Sort otimizado
+    for(int i = 0; i < tam - 1; i++)
     {
         trocou = false;
-        for(int j = 0; j < tam-1-i; j++)
+        
+        for(int j = 0; j < tam - 1 - i; j++)
         {
-            if(num[j] > num[j+1])
+            numComparacoes++; // Contabiliza CADA olhada que ele dá, dando verdadeiro ou falso
+
+            if(vetor[j] > vetor[j+1])
             {
-                aux = num[j];
-                num[j] = num[j+1];
-                num[j+1] = aux;
+                aux = vetor[j];
+                vetor[j] = vetor[j+1];
+                vetor[j+1] = aux;
                 trocou = true;
-                trocas++;
+                numTrocas++;
             }
         }    
-        passagens++;
-        if(!trocou) // parada antecipada,caso não troque nada
-            {
-                break;
-            }
+        
+        // Parada antecipada: se percorreu o vetor e não trocou ninguém, já está ordenado
+        if(!trocou) 
+        {
+            break;
+        }
     }
 
-    printf("Quantidade de passagens para ordenar: %d.\n", passagens);
-    printf("Quantidade de trocas: %d\n\n", trocas);
     printf("Vetor ordenado:\n");
-    for(int i = 0; i < tam; i++) {
-        printf("%d ", num[i]);
+    for(int i = 0; i < tam; i++)
+    {
+        printf("%d ", vetor[i]);
     }
-    printf("\n");
+    printf("\n\n");
+    printf("Numero de Comparacoes: %d\n", numComparacoes);
+    printf("Numero de Trocas: %d\n", numTrocas);
+    printf("------------------------------------\n\n");
+}
+
+int main(void){
+
+    int v1[] = {3, 8, 17, 21, 42, 56, 65, 74, 89, 99}; // ordenado
+    int v2[] = {99, 89, 74, 65, 56, 42, 21, 17, 8, 3}; // inverso
+    int v3[] = {42, 17, 89, 3, 56, 74, 21, 99, 8, 65}; // bagunçado
+
+    bubbleSort(v1, tamanho(v1), "Vetor ordenado");
+    bubbleSort(v2, tamanho(v2), "Vetor invertido");
+    bubbleSort(v3, tamanho(v3), "Vetor baguncado");
 
     return 0;
 }
